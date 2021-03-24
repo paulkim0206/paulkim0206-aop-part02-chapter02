@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
@@ -29,14 +30,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val numberTextViewList: List<TextView> by lazy {
-        listOf<TextView> (
+        listOf<TextView>(
             findViewById<TextView>(R.id.textView1),
             findViewById<TextView>(R.id.textView2),
             findViewById<TextView>(R.id.textView3),
             findViewById<TextView>(R.id.textView4),
             findViewById<TextView>(R.id.textView5),
             findViewById<TextView>(R.id.textView6)
-                )
+        )
     }
 
     private var didRun = false
@@ -54,8 +55,6 @@ class MainActivity : AppCompatActivity() {
         initRunButton()
         initAddButton()
         initClearButton()
-
-
     }
 
     private fun initClearButton() {
@@ -66,6 +65,20 @@ class MainActivity : AppCompatActivity() {
                 it.isVisible = false
             }
             didRun = false
+        }
+    }
+
+    private fun setNumberBackground(number: Int, textView: TextView) {
+        when (number) {
+            in 1..10 -> textView.background =
+                ContextCompat.getDrawable(this, R.drawable.circle_yellow)
+            in 11..20 -> textView.background =
+                ContextCompat.getDrawable(this, R.drawable.circle_blue)
+            in 21..30 -> textView.background =
+                ContextCompat.getDrawable(this, R.drawable.circle_red)
+            in 31..40 -> textView.background =
+                ContextCompat.getDrawable(this, R.drawable.circle_grey)
+            else -> textView.background = ContextCompat.getDrawable(this, R.drawable.circle_green)
         }
     }
 
@@ -89,12 +102,11 @@ class MainActivity : AppCompatActivity() {
             val textView = numberTextViewList[pickNumberSet.size]
             textView.isVisible = true
             textView.text = numberPicker.value.toString()
-
+            setNumberBackground(numberPicker.value, textView)
             pickNumberSet.add(numberPicker.value)
-
-
         }
     }
+
 
     private fun initRunButton() {
         runButton.setOnClickListener {
@@ -108,9 +120,8 @@ class MainActivity : AppCompatActivity() {
                 textView.text = number.toString()
                 textView.isVisible = true
 
+                setNumberBackground(number, textView)
             }
-
-            Log.d("MainActivity", list.toString())
         }
     }
 
